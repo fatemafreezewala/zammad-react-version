@@ -16,6 +16,8 @@ import Info from '../screens/users/Info';
 import ExtraInfo from '../screens/users/ExtraInfo';
 import Role from '../screens/Role';
 import DrawerNavigator from './DrawerNavigator'
+import TicketsByType from '../screens/operator/TicketsByType';
+import MarkersOnPending from '../screens/operator/MarkersOnPending';
 
 
 
@@ -81,6 +83,10 @@ const AppNavigator = () => {
                
 <Stack.Screen name="ViewTickets" component={ViewTickets} />
 <Stack.Screen name="Ohome" component={DrawerNavigator}></Stack.Screen>
+<Stack.Screen name="TicketsByType" component={TicketsByType}></Stack.Screen>
+<Stack.Screen name="MarkersOnPending" component={MarkersOnPending}></Stack.Screen>
+
+
               </>
             )}
           </Stack.Navigator>

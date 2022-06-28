@@ -8,12 +8,13 @@ import MCI from 'react-native-vector-icons/AntDesign'
 import AuthContext from '../context/AuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../constants/api'
+import { theme } from '../core/theme'
 
 function CustomDrawer(props) {
 	const [modalVisible, setModalVisible] = useState(false); 
 
     const { signOut } = useContext(AuthContext) 
-	const [overview, setOverviews] = useState([])
+	const [overview, setOverviews] = useState(null)
 	React.useEffect(() => {
 		getOverview()
 	
@@ -25,7 +26,8 @@ function CustomDrawer(props) {
 	const getOverview = async() =>{
 		const res = await api.get('ticket_overviews?_=123');
 	  
-		  if (res.ok) {        
+		  if (res.ok) {  
+			setOverviews(res.data)      
 			  console.log(res.data)
 			  //setLoading(false)
 		  } else {
@@ -33,38 +35,12 @@ function CustomDrawer(props) {
 		   setLoading(false)
 		  }
 	} 
-	const logOut = async() =>{
-
-		// let mobile_number =  await MMKVStorage.getString('mobile_number')
 	
-		// const formData = new FormData()
-		// formData.append('mobile', mobile_number)
-		// const api = create({
-		// 	baseURL: 'https://www.venza.my/venza_api/login_api'
-		//   }) 
-		//   const response = await api.post('/logout', formData, {});
-		//   console.log(response.data)
-		//   await AsyncStorage.clear()
-		// signOut() 
-	}
-	const createTwoButtonAlert = () =>{
-		setModalVisible(true)
-	}
-    // Alert.alert( 
-    //   "Are you sure?",
-    //   "You want to log Out ?",
-    //   [
-    //     {
-    //       text: "Cancel",
-    //       onPress: () => console.log("Cancel Pressed"),
-    //       style: "cancel"
-    //     },
-    //     { text: "OK", onPress: () => logOut() }
-    //   ]
-    // );
+
+    
 	return (
 		<View style={{ flex: 1, backgroundColor: '#fff' }}>
-			{/* <Image style={{position:'absolute'}} source={require('../assets/sidebar.png')}></Image>
+			
 			<View style={styles.drawerHeader}>
 				<TouchableOpacity onPress={() => props.navigation.closeDrawer()}>
 					<MCI name="close" size={25} color="#000" />
@@ -74,14 +50,21 @@ function CustomDrawer(props) {
 			
 			<DrawerContentScrollView {...props}>
 				<DrawerItemList {...props} />
-				<View style={{flexDirection:'row'}}>
-				<TouchableOpacity onPress={createTwoButtonAlert}>
-					<View style={{flexDirection:'row',height:70,paddingLeft:wp('3.2%'),paddingTop:hp('1.9%'),justifyContent:'space-evenly'}}>
-						<Image source={require('../assets/log-in.png')}></Image><Text style={styles.textlabel}>Log Out</Text>
-					</View>
-				</TouchableOpacity>
+				<View >
+				{overview && overview.map(res=>{
+						return <TouchableOpacity onPress={()=>props.navigation.navigate('TicketsByType',{link:res.link})}
+						style={{height:50,marginTop:5,flexDirection:'row',alignItems:'center',paddingHorizontal:15,justifyContent:'space-between'}}>
+							<Text style={{fontSize:18}}>{res.name}</Text>
+							<View style={{backgroundColor:theme.colors.primary,padding:5,borderRadius:4}}>
+							<Text style={{fontSize:18,color:'#fff'}}>{res.count}</Text>
+							</View>
+							</TouchableOpacity>
+					})}
+				
+				
+				
 			</View>
-			</DrawerContentScrollView> */}
+			</DrawerContentScrollView>
 			
 		</View>
 	)

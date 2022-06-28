@@ -12,6 +12,7 @@ import AuthContext from '../context/AuthContext';
 import { theme } from '../core/theme'
 import localization from '../constants/localization'
 import apiconstants from '../constants/apiconstants'
+import base64 from 'react-native-base64'
 
 const Login = () => {
   const [phone, setPhone] = useState('')
@@ -62,8 +63,32 @@ const Login = () => {
    
   }
   const loginOperator = async() =>{
-
+    setLoading(true)
+    api.setHeaders({
+      Authorization: `Basic ${base64.encode(username+":"+password)}`
+    })
+    api.get("user_access_token").then(res=>{
+      let permissions = res.data.permissions
+      createToken(permissions)
+    })
   }
+  const createToken = async(permissions) =>{
+    const res = await api.post('user_access_token', {
+      label: "app_login",
+      permission: permissions.map((p)=>p.name),
+  });
+  if(res.ok == true){
+    api.setHeaders({
+      Authorization: `Token token=${res.data.name}`
+    })
+    await AsyncStorage.setItem('user', JSON.stringify({}));
+    signIn();
+    setLoading(false)
+  }else{
+    setLoading(false)
+    Alert.alert(localization.Error_while_login)
+  }
+  } 
   return (
     <View style={{flex:1,backgroundColor:'#fff'}}>
        <ScrollView >

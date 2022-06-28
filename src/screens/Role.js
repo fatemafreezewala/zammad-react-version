@@ -14,7 +14,7 @@ const Role = ({navigation}) => {
         if(apiconstants.role == 'CLIENT'){
             navigation.navigate('Home')
         }else{
-            navigation.navigate('Ohome')
+            navigation.navigate('MarkersOnPending')
         }
         
     }
