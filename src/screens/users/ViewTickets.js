@@ -75,7 +75,7 @@ const ViewTickets = ({navigation}) => {
         to:getReplyToAddress(item.id),
         typeId:10,
         ticketId:item.id,
-        priority:item.priority_id,
+        priority:item.priority_id, 
         state_id:item.state_id
       })} style={{
    width:'100%',minHeight:70,borderBottomColor:'grey',borderBottomWidth:1}}>

@@ -1,5 +1,5 @@
 import React,{useContext,useState} from 'react'
-import { View, StyleSheet, TouchableOpacity,Image,Text,Alert,Modal  } from 'react-native'
+import { View, StyleSheet, TouchableOpacity,Image,Text,Alert,Modal, ActivityIndicatorBase, ActivityIndicator  } from 'react-native'
 import {
 	DrawerContentScrollView,
 	DrawerItemList,
@@ -9,34 +9,75 @@ import AuthContext from '../context/AuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../constants/api'
 import { theme } from '../core/theme'
+import { getMarkerBoxStyle } from 'react-native-render-html/lib/typescript/elements/ListElement'
 
 function CustomDrawer(props) {
 	const [modalVisible, setModalVisible] = useState(false); 
 
     const { signOut } = useContext(AuthContext) 
 	const [overview, setOverviews] = useState(null)
+	const [loading, setLoading] = useState(false)
+	const [user, setUser] = useState(null)
 	React.useEffect(() => {
 		getOverview()
-	
+		getUesr()
 	  return () => {
 		getOverview()
+		getUesr()
 	  }
 	}, [])
 	
 	const getOverview = async() =>{
+		setLoading(true)
 		const res = await api.get('ticket_overviews?_=123');
 	  
 		  if (res.ok) {  
 			setOverviews(res.data)      
 			  console.log(res.data)
+			  setLoading(false)
 			  //setLoading(false)
 		  } else {
 		   //Alert.alert(localization.Error_while_login)
 		   setLoading(false)
 		  }
 	} 
-	
-
+	const getMarker = ()=>{
+		setLoading(true)
+		api.get(`ticket_overviews?view=all_escalated`).then(res=>{
+       
+			// setCompleteData(res.data)
+			 let allTickets = res.data.assets.Ticket
+			   let ticketData =[]
+			   for (var key in allTickets) {
+				   if (allTickets.hasOwnProperty(key)) {
+					   ticketData.push(allTickets[key])
+				   } 
+			   }
+			   ticketData = ticketData.reverse()
+			   let arraym = []
+			   ticketData.forEach(element => {
+				 if(element.coordinates){
+				   let arr = element.coordinates.split(',');
+				   arr[0] = parseFloat(arr[0])
+				   arr[1] = parseFloat(arr[1])
+				   arraym.push(arr)
+				 }
+				 
+			   });
+			  
+			   //setlatlongArray(arraym.slice(0,20))
+			   props.navigation.navigate('MarkersOnPending',{marker:arraym.slice(0,20)})
+	 //setAlltickets(ticketData)
+			}).finally(()=>{
+			 setLoading(false)
+			})
+		
+	}
+	const getUesr = async() =>{
+		const res =  await api.get("users/me")
+        
+		setUser(res.data)
+	}
     
 	return (
 		<View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -47,9 +88,13 @@ function CustomDrawer(props) {
 				</TouchableOpacity>
 				<View style={{ width: 50 }} /> 
 			</View>
-			
+			<Text style={{marginLeft:10,color:'#000',fontSize:18,fontWeight:'bold'}}>{user && user.firstname} {user && user.firstname}</Text>
+			<Text style={{marginLeft:10,color:'#000',fontSize:16}}>{user && user.email}</Text>
 			<DrawerContentScrollView {...props}>
 				<DrawerItemList {...props} />
+
+				{loading == true && (<ActivityIndicator size="small" color={theme.colors.primary}></ActivityIndicator>)}
+				
 				<View >
 				{overview && overview.map(res=>{
 						return <TouchableOpacity onPress={()=>props.navigation.navigate('TicketsByType',{link:res.link})}
@@ -60,7 +105,13 @@ function CustomDrawer(props) {
 							</View>
 							</TouchableOpacity>
 					})}
-				
+				<TouchableOpacity onPress={()=>{getMarker()}}
+						style={{height:50,marginTop:5,flexDirection:'row',alignItems:'center',paddingHorizontal:15,justifyContent:'space-between'}}>
+							<Text style={{fontSize:18}}>Map Markers</Text>
+							<View style={{backgroundColor:theme.colors.primary,padding:5,borderRadius:4}}>
+						
+							</View>
+							</TouchableOpacity>
 				
 				
 			</View>

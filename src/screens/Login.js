@@ -68,8 +68,11 @@ const Login = () => {
       Authorization: `Basic ${base64.encode(username+":"+password)}`
     })
     api.get("user_access_token").then(res=>{
+      console.log(res)
       let permissions = res.data.permissions
       createToken(permissions)
+    }).catch(err=>{
+      console.log(err)
     })
   }
   const createToken = async(permissions) =>{
@@ -81,6 +84,7 @@ const Login = () => {
     api.setHeaders({
       Authorization: `Token token=${res.data.name}`
     })
+    await AsyncStorage.setItem('token', res.data.name);
     await AsyncStorage.setItem('user', JSON.stringify({}));
     signIn();
     setLoading(false)

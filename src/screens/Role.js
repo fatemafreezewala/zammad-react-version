@@ -2,6 +2,9 @@ import { StyleSheet, Text, View,ActivityIndicator } from 'react-native'
 import React from 'react'
 import apiconstants from '../constants/apiconstants'
 import {theme} from '../core/theme'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import api from '../constants/api'
+
 const Role = ({navigation}) => {
     React.useEffect(() => {
       checkRole()
@@ -14,7 +17,11 @@ const Role = ({navigation}) => {
         if(apiconstants.role == 'CLIENT'){
             navigation.navigate('Home')
         }else{
-            navigation.navigate('MarkersOnPending')
+          let token = await AsyncStorage.getItem('token');
+          api.setHeaders({
+            Authorization: `Token token=${token}`
+          })
+            navigation.navigate('Ohome')
         }
         
     }

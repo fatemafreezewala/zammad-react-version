@@ -11,9 +11,10 @@ import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 import Button from '../../components/Button'
 import Toast from 'react-native-simple-toast';
 import localization from '../../constants/localization'
+import apiconstants from '../../constants/apiconstants'
 
 const TicketsDetails = ({navigation,route}) => {
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true) 
     const [data, setData] = useState(null)
     const {id,to,typeId,ticketId,priority,state_id} = route.params
     const { width } = useWindowDimensions();
@@ -21,7 +22,7 @@ const TicketsDetails = ({navigation,route}) => {
     const [mimetype, setMimetype] = useState('')
     const [image, setImage] = useState([])
     const [message, setmessage] = useState('')
-    const [mloading, setMLoading] = useState(false)
+    const [mloading, setMLoading] = useState(false) 
     useEffect(() => {
      
         getDetails()
@@ -119,11 +120,13 @@ const TicketsDetails = ({navigation,route}) => {
     <View style={{flex:1,backgroundColor:'#fff'}}>
         <View style={{minHeight:70,flexDirection:'row',alignItems:'center',padding:15}}>
           <TouchableOpacity onPress={()=>navigation.goBack()}>
-         
+          
               <Back  size={30} color="#000" name="arrowleft"></Back>
               </TouchableOpacity>
               <Text style={{color:'#000',marginLeft:10,fontSize:20}}>{localization.TICKET_DETAILS}</Text>
         </View>
+        {apiconstants.role == 'OPERATOR' && (<TouchableOpacity onPress={()=>navigation.navigate('ChangeBookingStatus',{id:id,status_p:state_id,priority_p:priority})} style={{backgroundColor:theme.colors.primary,padding:10,width:120,justifyContent:'center',alignSelf:'flex-end',marginRight:20}}>
+          <Text style={{color:'#fff'}}>Change Status</Text></TouchableOpacity>)}
       <ScrollView>
       {loading && (<ActivityIndicator size="large" color={theme.colors.primary}></ActivityIndicator>)}
       {data && data.ticket_article_ids && data.ticket_article_ids.map((ticketRef) => {

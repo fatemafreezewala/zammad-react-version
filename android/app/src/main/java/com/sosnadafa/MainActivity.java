@@ -1,4 +1,4 @@
-package com.sosnadafa.oujda;
+package com.sosnadafa.controller;
 
 import com.facebook.react.ReactActivity;
 

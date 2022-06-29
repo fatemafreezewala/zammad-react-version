@@ -20,20 +20,34 @@ const CreateTicket = ({navigation}) => {
   const [mimetype, setMimetype] = useState('')
   React.useEffect(() => {
     
-    pointInPoly()
+    checkOpe()
   
-    return () => {
-      pointInPoly()
+    return () => { 
+      checkOpe()
     }
   }, [])
+  const checkOpe = async() =>{
+    
+      
+     
+         
+    
+  }
   const pointInPoly = (lat,long)=>{
     var polygon = apiconstants.city_coordinates
     return pointInPolygon([ lat, long ], polygon)
   }
   const createTicket = async() =>{
     if(title != '' && message != '' && image != ''){
-      var userdata = await AsyncStorage.getItem('user')
-      userdata = JSON.parse(userdata)
+      let userdata = null;
+      if(apiconstants.role == 'CLIENT'){
+         userdata = await AsyncStorage.getItem('user')
+        userdata = JSON.parse(userdata)
+      }else{
+        const res =  await api.get("users/me")
+        userdata = res.data
+      }
+     
    
       setloading(true)
       const granted = await PermissionsAndroid.request(
@@ -41,7 +55,7 @@ const CreateTicket = ({navigation}) => {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       
-        console.log(userdata)
+       
         Geolocation.getCurrentPosition(
           (position) => {
             var ifinside = pointInPoly(position.coords.latitude,position.coords.longitude)
@@ -66,7 +80,7 @@ const CreateTicket = ({navigation}) => {
                 "note": message,
                 "coordinates":position.coords.latitude+','+position.coords.longitude
                 }).then(res=>{
-                  console.log(res.data)
+               
                   if(res.status == 500){
                     Alert.alert(res.data.error)
                   }else if(res.data.id){
@@ -81,7 +95,7 @@ const CreateTicket = ({navigation}) => {
                     }
                   }
                 })
-              console.log(position);
+           
             }else{
             Alert.alert('Ticket cannot be created for this area.')
             }
@@ -89,7 +103,7 @@ const CreateTicket = ({navigation}) => {
           },
           (error) => {
             // See error code charts below.
-            console.log(error.code, error.message);
+         
             setloading(false)
           },
           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
@@ -113,7 +127,7 @@ const CreateTicket = ({navigation}) => {
    if(type == 'camera'){
     launchCamera(options, res => {
 
-      console.log('Response = ', res);
+  
 
       if (res.didCancel) {
         console.log('User cancelled image picker');

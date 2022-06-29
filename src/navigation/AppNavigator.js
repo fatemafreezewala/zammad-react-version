@@ -18,8 +18,7 @@ import Role from '../screens/Role';
 import DrawerNavigator from './DrawerNavigator'
 import TicketsByType from '../screens/operator/TicketsByType';
 import MarkersOnPending from '../screens/operator/MarkersOnPending';
-
-
+import ChangeBookingStatus from '../screens/operator/ChangeBookingStatus';
 
 
 const Stack = createNativeStackNavigator();
@@ -85,6 +84,7 @@ const AppNavigator = () => {
 <Stack.Screen name="Ohome" component={DrawerNavigator}></Stack.Screen>
 <Stack.Screen name="TicketsByType" component={TicketsByType}></Stack.Screen>
 <Stack.Screen name="MarkersOnPending" component={MarkersOnPending}></Stack.Screen>
+<Stack.Screen name="ChangeBookingStatus" component={ChangeBookingStatus}></Stack.Screen>
 
 
               </>
