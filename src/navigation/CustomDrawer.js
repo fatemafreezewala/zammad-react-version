@@ -29,11 +29,12 @@ function CustomDrawer(props) {
 	
 	const getOverview = async() =>{
 		setLoading(true)
+		
 		const res = await api.get('ticket_overviews?_=123');
 	  
 		  if (res.ok) {  
 			setOverviews(res.data)      
-			  console.log(res.data)
+			  
 			  setLoading(false)
 			  //setLoading(false)
 		  } else {
@@ -54,20 +55,22 @@ function CustomDrawer(props) {
 				   } 
 			   }
 			   ticketData = ticketData.reverse()
+			   console.log(ticketData[0])
 			   let arraym = []
 			   ticketData.forEach(element => {
 				 if(element.coordinates){
 				   let arr = element.coordinates.split(',');
 				   arr[0] = parseFloat(arr[0])
 				   arr[1] = parseFloat(arr[1])
+				   arr[2] = element.id
 				   arraym.push(arr)
 				 }
 				 
 			   });
 			  
-			   //setlatlongArray(arraym.slice(0,20))
+			  
 			   props.navigation.navigate('MarkersOnPending',{marker:arraym.slice(0,20)})
-	 //setAlltickets(ticketData)
+	
 			}).finally(()=>{
 			 setLoading(false)
 			})

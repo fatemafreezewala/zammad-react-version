@@ -47,7 +47,9 @@ const MarkersOnPending = ({route,navigation}) => {
        })
         
   }
-
+  const runFirst = `
+  window.postMessage('hello','*')
+`;
   return (
     <View style={{flex:1}}>
         <View style={{height:50,backgroundColor:'#fff',flexDirection:'row',alignItems:'center'}}>
@@ -60,7 +62,8 @@ const MarkersOnPending = ({route,navigation}) => {
           style={{flex:1}}
           originWhitelist={["*"]} 
           scalesPageToFit={true}
-          injectedJavaScript={`var planes = ${JSON.stringify(marker)};
+          javaScriptEnabled={true}
+          injectedJavaScript={` var planes = ${JSON.stringify(marker)};
           var greenIcon = L.icon({ 
             iconUrl: 'placeholder.png',
           
@@ -77,14 +80,37 @@ const MarkersOnPending = ({route,navigation}) => {
                   attribution: '&copy; ' + mapLink + ' Contributors',
                   }).addTo(map);
       
-          for (var i = 0; i < planes.length; i++) {
-            marker = new L.marker([planes[i][0],planes[i][1]], {icon: greenIcon})
-              .bindPopup('Ticket raised here')
-              .addTo(map);
-          }`}
-          source={{ uri:"file:///android_asset/leaflet/index.html",baseUrl:"file:///android_asset/leaflet/"
-
-         }}/>)}
+                  for (var i = 0; i < planes.length; i++) {
+           
+                    const src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Stack_Exchange_logo_and_wordmark.svg/375px-Stack_Exchange_logo_and_wordmark.svg.png";
+        const popupContent = document.createElement("div")
+        popupContent.innerHTML = "<img width='100' height='100' src='http://support.sos-ndd.com/api/v1/ticket_attachment/1156/617/508?disposition=attachment'></img>"
+                               + "<button onclick={getId(i)}>Edit Ticket</button>"
+                    marker = new L.marker([planes[i][0],planes[i][1]], {customId:"010000006148"}).addTo(map)
+                    marker.myID = planes[i][2];
+                    marker.bindPopup(
+                        popupContent,
+                        { maxWidth: "auto" }
+                        
+                    ).on('click',function(e) {
+                      var i = e.target.myID;
+                      window.ReactNativeWebView.postMessage(i)
+                    })
+                      .addTo(map);
+                  }`}
+          source={{ uri:"file:///android_asset/leaflet/index.html",baseUrl:"file:///android_asset/leaflet/"}}
+          onMessage={(event) => {
+            navigation.navigate('TicketsDetails',{
+              id:item.id,
+              to:getReplyToAddress(item.id),
+              typeId:10,
+              ticketId:item.id,
+              priority:item.priority_id,
+              state_id:item.state_id
+            })
+            console.log(event.nativeEvent.data)
+          }}
+          />)}
       
     </View>
   )
