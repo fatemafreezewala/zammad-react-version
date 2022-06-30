@@ -63,6 +63,8 @@ function CustomDrawer(props) {
 				   arr[0] = parseFloat(arr[0])
 				   arr[1] = parseFloat(arr[1])
 				   arr[2] = element.id
+				   arr[3] = element.title
+				   arr[4] = element.number
 				   arraym.push(arr)
 				 }
 				 

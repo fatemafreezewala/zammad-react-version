@@ -76,7 +76,7 @@ const ViewTickets = ({navigation}) => {
         typeId:10,
         ticketId:item.id,
         priority:item.priority_id, 
-        state_id:item.state_id
+        state_id:item.state_id 
       })} style={{
    width:'100%',minHeight:70,borderBottomColor:'grey',borderBottomWidth:1}}>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>

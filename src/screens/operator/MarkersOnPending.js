@@ -63,51 +63,49 @@ const MarkersOnPending = ({route,navigation}) => {
           originWhitelist={["*"]} 
           scalesPageToFit={true}
           javaScriptEnabled={true}
-          injectedJavaScript={` var planes = ${JSON.stringify(marker)};
-          var greenIcon = L.icon({ 
-            iconUrl: 'placeholder.png',
-          
-      
-            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-            shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-        });
-              var map = L.map('map').setView([33.6917226, -7.3767413], 13);
-              mapLink = 
-                  '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-              L.tileLayer(
-                  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  attribution: '&copy; ' + mapLink + ' Contributors',
-                  }).addTo(map);
-      
-                  for (var i = 0; i < planes.length; i++) {
+          injectedJavaScript={`var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
            
-                    const src = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Stack_Exchange_logo_and_wordmark.svg/375px-Stack_Exchange_logo_and_wordmark.svg.png";
-        const popupContent = document.createElement("div")
-        popupContent.innerHTML = "<img width='100' height='100' src='http://support.sos-ndd.com/api/v1/ticket_attachment/1156/617/508?disposition=attachment'></img>"
-                               + "<button onclick={getId(i)}>Edit Ticket</button>"
-                    marker = new L.marker([planes[i][0],planes[i][1]], {customId:"010000006148"}).addTo(map)
-                    marker.myID = planes[i][2];
-                    marker.bindPopup(
-                        popupContent,
-                        { maxWidth: "auto" }
-                        
-                    ).on('click',function(e) {
-                      var i = e.target.myID;
-                      window.ReactNativeWebView.postMessage(i)
-                    })
-                      .addTo(map);
-                  }`}
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
+          }),
+          latlng = L.latLng(34.6820, -1.9002);
+    
+        var map = L.map('map', {center: latlng, zoom: 13, layers: [tiles]});
+    
+        var markers = L.markerClusterGroup();
+        var addressPoints = ${JSON.stringify(marker)};
+        var greenIcon = L.icon({ 
+          iconUrl: 'placeholder.png',
+        
+    
+          iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+          shadowAnchor: [4, 62],  // the same for the shadow
+          popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+      });
+        for (var i = 0; i < addressPoints.length; i++) {
+         
+            
+          var a = addressPoints[i]; 
+          var title = a[3];
+          var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title});
+          marker.bindPopup(title);
+          markers.addLayer(marker);
+        }
+        lc = L.control.locate({
+      strings: {
+          title: "Show me where I am, yo!"
+      }
+  }).addTo(map);
+        map.addLayer(markers)`}
           source={{ uri:"file:///android_asset/leaflet/index.html",baseUrl:"file:///android_asset/leaflet/"}}
           onMessage={(event) => {
-            navigation.navigate('TicketsDetails',{
-              id:item.id,
-              to:getReplyToAddress(item.id),
-              typeId:10,
-              ticketId:item.id,
-              priority:item.priority_id,
-              state_id:item.state_id
-            })
+            // navigation.navigate('TicketsDetails',{
+            //   id:item.id,
+            //   to:getReplyToAddress(item.id),
+            //   typeId:10,
+            //   ticketId:item.id,
+            //   priority:item.priority_id,
+            //   state_id:item.state_id
+            // })
             console.log(event.nativeEvent.data)
           }}
           />)}

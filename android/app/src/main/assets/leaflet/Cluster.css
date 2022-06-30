@@ -1,0 +1,163 @@
+.leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
+	-webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
+	-moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
+	-o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
+	transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+}
+
+.leaflet-cluster-spider-leg {
+	/* stroke-dashoffset (duration and function) should match with leaflet-marker-icon transform in order to track it exactly */
+	-webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;
+	-moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;
+	-o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
+	transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
+}
+.marker-cluster-small {
+	background-color: rgba(181, 226, 140, 0.6);
+	}
+.marker-cluster-small div {
+	background-color: rgba(110, 204, 57, 0.6);
+	}
+
+.marker-cluster-medium {
+	background-color: rgba(241, 211, 87, 0.6);
+	}
+.marker-cluster-medium div {
+	background-color: rgba(240, 194, 12, 0.6);
+	}
+
+.marker-cluster-large {
+	background-color: rgba(253, 156, 115, 0.6);
+	}
+.marker-cluster-large div {
+	background-color: rgba(241, 128, 23, 0.6);
+	}
+
+	/* IE 6-8 fallback colors */
+.leaflet-oldie .marker-cluster-small {
+	background-color: rgb(181, 226, 140);
+	}
+.leaflet-oldie .marker-cluster-small div {
+	background-color: rgb(110, 204, 57);
+	}
+
+.leaflet-oldie .marker-cluster-medium {
+	background-color: rgb(241, 211, 87);
+	}
+.leaflet-oldie .marker-cluster-medium div {
+	background-color: rgb(240, 194, 12);
+	}
+
+.leaflet-oldie .marker-cluster-large {
+	background-color: rgb(253, 156, 115);
+	}
+.leaflet-oldie .marker-cluster-large div {
+	background-color: rgb(241, 128, 23);
+}
+
+.marker-cluster {
+	background-clip: padding-box;
+	border-radius: 20px;
+	}
+.marker-cluster div {
+	width: 30px;
+	height: 30px;
+	margin-left: 5px;
+	margin-top: 5px;
+
+	text-align: center;
+	border-radius: 15px;
+	font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+	}
+.marker-cluster span {
+	line-height: 30px;
+	}
+    /* Compatible with Leaflet 0.7 */
+a.leaflet-bar-part.leaflet-bar-part-single{
+    background-color: #0078A8 !important;
+  }
+    .leaflet-control-locate  a {
+      cursor: pointer;
+  
+      
+  
+      
+    }
+    .leaflet-control-locate  a .leaflet-control-locate-location-arrow {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: 7px;
+        background-color: black;
+        -webkit-mask-image: url('location-arrow-solid.svg');
+        mask-image: url('location-arrow-solid.svg');
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+      }
+      .leaflet-control-locate  a .leaflet-control-locate-spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: 7px;
+        background-color: black;
+        -webkit-mask-image: url('../spinner-solid.svg');
+        mask-image: url('../spinner-solid.svg');
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        animation: leaflet-control-locate-spin 2s linear infinite;
+      }
+    /* &.active a .leaflet-control-locate-location-arrow {
+      background-color: #2074b6;
+    }
+  
+    &.following a .leaflet-control-locate-location-arrow {
+      background-color: #fc8428;
+    } */
+  
+  
+  .leaflet-touch .leaflet-bar .leaflet-locate-text-active {
+    width: 100%;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 10px;
+  
+    
+  }
+  .leaflet-touch .leaflet-bar .leaflet-locate-text-active .leaflet-locate-icon {
+    padding: 0 5px 0 0;
+  }
+  .leaflet-control-locate-location circle {
+    animation: leaflet-control-locate-throb 4s ease infinite;
+  }
+  
+  @keyframes leaflet-control-locate-throb {
+    0% {
+      stroke-width: 1;
+    }
+  
+    50% {
+      stroke-width: 3;
+      transform: scale(0.8, 0.8);
+    }
+  
+    100% {
+      stroke-width: 1;
+    }
+  }
+  
+  @keyframes leaflet-control-locate-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+   
