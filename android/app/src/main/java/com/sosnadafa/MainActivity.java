@@ -1,4 +1,4 @@
-package com.controller.oujda;
+package com.nadafa.mohammedia;
 
 import com.facebook.react.ReactActivity;
 

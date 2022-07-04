@@ -1,4 +1,4 @@
-package com.controller.oujda;
+package com.nadafa.mohammedia;
 
 import android.app.Application;
 import android.content.Context;

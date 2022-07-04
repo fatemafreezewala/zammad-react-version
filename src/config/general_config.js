@@ -1,5 +1,6 @@
 const general_config = {
     // /mohammadia
-    city:'oujda'
+    //oujda
+    city:'mohammadia'
 }
 export default general_config
