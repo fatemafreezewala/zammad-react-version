@@ -67,7 +67,7 @@ const MarkersOnPending = ({route,navigation}) => {
            
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
           }),
-          latlng = L.latLng(34.6820, -1.9002);
+          latlng = L.latLng(33.6835, -7.3849);
     
         var map = L.map('map', {center: latlng, zoom: 13, layers: [tiles]});
     
@@ -85,10 +85,15 @@ const MarkersOnPending = ({route,navigation}) => {
          
             
           var a = addressPoints[i]; 
-          var title = a[3];
+          var title = 'TITLE : '+a[3]+' NUMBER : '+a[4];
+          var idi = a[2];
           var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title});
+         
           marker.bindPopup(title);
+          
+         
           markers.addLayer(marker);
+          
         }
         lc = L.control.locate({
       strings: {
@@ -98,14 +103,14 @@ const MarkersOnPending = ({route,navigation}) => {
         map.addLayer(markers)`}
           source={{ uri:"file:///android_asset/leaflet/index.html",baseUrl:"file:///android_asset/leaflet/"}}
           onMessage={(event) => {
-            // navigation.navigate('TicketsDetails',{
-            //   id:item.id,
-            //   to:getReplyToAddress(item.id),
-            //   typeId:10,
-            //   ticketId:item.id,
-            //   priority:item.priority_id,
-            //   state_id:item.state_id
-            // })
+            navigation.navigate('TicketsDetails',{
+              id:item.id,
+              to:'',
+              typeId:10,
+              ticketId:item.id,
+              priority:'1',
+              state_id:'4'
+            })
             console.log(event.nativeEvent.data)
           }}
           />)}

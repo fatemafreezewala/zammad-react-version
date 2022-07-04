@@ -112,7 +112,7 @@ function CustomDrawer(props) {
 					})}
 				<TouchableOpacity onPress={()=>{getMarker()}}
 						style={{height:50,marginTop:5,flexDirection:'row',alignItems:'center',paddingHorizontal:15,justifyContent:'space-between'}}>
-							<Text style={{fontSize:18}}>Map Markers</Text>
+							<Text style={{fontSize:18}}>Localisez conteneurs</Text>
 							<View style={{backgroundColor:theme.colors.primary,padding:5,borderRadius:4}}>
 						
 							</View>

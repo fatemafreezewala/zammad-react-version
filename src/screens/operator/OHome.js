@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View ,Image,Linking,Alert, Touchable,TouchableOpacity, ScrollView,BackHandler} from 'react-native'
-import React,{useContext,useEffect} from 'react'
+import { StyleSheet, Text, View ,Image,Linking,Alert, Touchable,TouchableOpacity, ScrollView,BackHandler, ActivityIndicator} from 'react-native'
+import React,{useContext,useEffect,useState} from 'react'
 import { Button } from 'react-native-paper';
 import ANT from 'react-native-vector-icons/AntDesign'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,9 +7,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../../context/AuthContext';
 
 import localization from '../../constants/localization'
+import api from '../../constants/api';
 
 const Home = ({navigation}) => {
   const {signOut} = React.useContext(AuthContext);
+  const [loading, setLoading] = useState(false)
   const logout = async()=>{
     await AsyncStorage.clear()
     signOut()
@@ -25,7 +27,42 @@ const Home = ({navigation}) => {
     ]);
     return true;
   };
-
+const getMarker = ()=>{
+		setLoading(true)
+		api.get(`ticket_overviews?view=all_escalated`).then(res=>{
+       
+			// setCompleteData(res.data)
+			 let allTickets = res.data.assets.Ticket
+			   let ticketData =[]
+			   for (var key in allTickets) {
+				   if (allTickets.hasOwnProperty(key)) {
+					   ticketData.push(allTickets[key])
+				   } 
+			   }
+			   ticketData = ticketData.reverse()
+			   console.log(ticketData[0])
+			   let arraym = []
+			   ticketData.forEach(element => {
+				 if(element.coordinates){
+				   let arr = element.coordinates.split(',');
+				   arr[0] = parseFloat(arr[0])
+				   arr[1] = parseFloat(arr[1])
+				   arr[2] = element.id
+				   arr[3] = element.title
+				   arr[4] = element.number
+				   arraym.push(arr)
+				 }
+				 
+			   });
+			  
+			  
+			   navigation.navigate('MarkersOnPending',{marker:arraym.slice(0,20)})
+	
+			}).finally(()=>{
+			 setLoading(false)
+			})
+		
+	}
   // useEffect(() => {
   //   BackHandler.addEventListener("hardwareBackPress", backAction);
 
@@ -39,7 +76,7 @@ const Home = ({navigation}) => {
         <ANT onPress={()=>{logout()}} name="logout" size={30} color="red"></ANT>
       </View>
      <ScrollView showsVerticalScrollIndicator={false}>
-     <Text style={{color:'black',fontSize:19,marginTop:10,marginBottom:10}}>{localization.call_text}</Text>
+     
      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
         <TouchableOpacity style={styles.column} onPress={()=>navigation.navigate('CreateTicket')} >
           <View style={{flex:1}}>
@@ -47,34 +84,31 @@ const Home = ({navigation}) => {
           <Text style={styles.title}>NOUVELLE DEMANDE</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate('ViewTickets')} style={styles.column}>
-        <Image style={styles.imgae} source={require('../../assets/paper.png')}></Image>
-        <Text style={styles.title}>MES RECLAMATIONS</Text>
-        </TouchableOpacity>
-      </View>
-      <View  style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('Map')} style={styles.column}>
+        <TouchableOpacity onPress={()=>{getMarker()}} style={styles.column}>
         <Image style={styles.imgae} source={require('../../assets/map.png')}></Image>
         <Text style={styles.title}>Localisez conteneurs</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate('Info')} style={styles.column}>
-        <Image style={styles.imgae} source={require('../../assets/calendar.png')}></Image>
-        <Text style={styles.title}>Horaires</Text>
-        </TouchableOpacity>
+        {/* <TouchableOpacity onPress={()=>navigation.navigate('ViewTickets')} style={styles.column}>
+        <Image style={styles.imgae} source={require('../../assets/paper.png')}></Image>
+        <Text style={styles.title}>MES RECLAMATIONS</Text>
+        </TouchableOpacity> */}
       </View>
       <View  style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
+       
+        {loading == true && (<ActivityIndicator size="small" color="black"></ActivityIndicator>)}
+        {/* <TouchableOpacity onPress={()=>navigation.navigate('Info')} style={styles.column}>
+        <Image style={styles.imgae} source={require('../../assets/calendar.png')}></Image>
+        <Text style={styles.title}>Horaires</Text>
+        </TouchableOpacity> */}
+      </View>
+      {/* <View  style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
         <TouchableOpacity onPress={()=>navigation.navigate('ExtraInfo')} style={styles.column}>
         <Image style={styles.imgae} source={require('../../assets/info.png')}></Image>
         <Text style={styles.title}>Infos Pratiques</Text>
         </TouchableOpacity>
        
-      </View>
-      <Button icon="phone" mode="contained" style={{marginTop:20}} onPress={() =>{
-        Linking.openURL(`tel:0522755490`)
-
-      }}>
-      {localization.contact_button_text}
-  </Button>
+      </View> */}
+      
   <Button onPress={()=>{backAction()}}>Exit App</Button>
      </ScrollView>
     </View>

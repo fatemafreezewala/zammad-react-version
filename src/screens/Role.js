@@ -19,7 +19,7 @@ const Role = ({navigation}) => {
         }else{
           let token = await AsyncStorage.getItem('token');
           api.setHeaders({
-            Authorization: `Token token=${token}`
+            Authorization: `Token token=${token}` 
           })
             navigation.navigate('Ohome')
         }

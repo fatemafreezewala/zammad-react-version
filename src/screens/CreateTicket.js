@@ -10,6 +10,7 @@ import {launchCamera,launchImageLibrary} from 'react-native-image-picker';
 import Back from 'react-native-vector-icons/AntDesign'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiconstants from '../constants/apiconstants';
+import localization from '../constants/localization';
 
 const CreateTicket = ({navigation}) => {
   const [title, setTitle] = useState('')
@@ -87,17 +88,17 @@ const CreateTicket = ({navigation}) => {
                     setTitle('')
                     setMessage('')
                     setImage('')
-                    Alert.alert('Ticket Created Successfully')
+                    Alert.alert(localization.Ticket_Created_Successfully)
                     if(apiconstants.role == 'CLIENT'){
                       navigation.navigate('Home')
-                    }else{
+                    }else{ 
                       navigation.navigate('Ohome')
                     }
                   }
                 })
            
             }else{
-            Alert.alert('Ticket cannot be created for this area.')
+            Alert.alert(localization.Ticket_cannot_be_created_for_this_area)
             }
             
           },
@@ -111,10 +112,10 @@ const CreateTicket = ({navigation}) => {
       
       }else{
         setloading(false)
-        Alert.alert('Location Permission not granted')
+        Alert.alert(localization.Location_Permission_not_granted)
       }
     }else{
-      Alert.alert('All Fields are required.')
+      Alert.alert(localization.All_Fields_are_required)
     }
     
     

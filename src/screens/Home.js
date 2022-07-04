@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../context/AuthContext';
 
 import localization from '../constants/localization'
-
+import apiconstants from '../constants/apiconstants'
 const Home = ({navigation}) => {
   const {signOut} = React.useContext(AuthContext);
   const logout = async()=>{
@@ -15,7 +15,7 @@ const Home = ({navigation}) => {
     signOut()
   }
   const backAction = () => {
-    Alert.alert("Hold on!", "Are you sure you want to go back?", [
+    Alert.alert(localization.Hold_on, localization.Are_you_sure_you_want_to_go_back, [
       {
         text: "Cancel",
         onPress: () => null,
@@ -39,7 +39,7 @@ const Home = ({navigation}) => {
         <ANT onPress={()=>{logout()}} name="logout" size={30} color="red"></ANT>
       </View>
      <ScrollView showsVerticalScrollIndicator={false}>
-     <Text style={{color:'black',fontSize:19,marginTop:10,marginBottom:10}}>{localization.call_text}</Text>
+     {apiconstants.role == 'CLIENT' && (<Text style={{color:'black',fontSize:19,marginTop:10,marginBottom:10}}>{localization.call_text}</Text>)}
      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
         <TouchableOpacity style={styles.column} onPress={()=>navigation.navigate('CreateTicket')} >
           <View style={{flex:1}}>
@@ -69,12 +69,12 @@ const Home = ({navigation}) => {
         </TouchableOpacity>
        
       </View>
-      <Button icon="phone" mode="contained" style={{marginTop:20}} onPress={() =>{
+     {apiconstants.role == 'CLIENT' && ( <Button icon="phone" mode="contained" style={{marginTop:20}} onPress={() =>{
         Linking.openURL(`tel:0522755490`)
 
       }}>
       {localization.contact_button_text}
-  </Button>
+  </Button>)}
   <Button onPress={()=>{backAction()}}>Exit App</Button>
      </ScrollView>
     </View>

@@ -131,7 +131,7 @@ const Login = () => {
       }} style={{width:'100%',
       borderRadius:5,height:50,backgroundColor:theme.colors.primary,justifyContent:'center',alignItems:'center'}}>
      
-        {loading ? (<ActivityIndicator color='#fff' size="small"></ActivityIndicator>) : (<Text style={{color:'#fff',fontSize:18}}>Login</Text>)}
+        {loading ? (<ActivityIndicator color='#fff' size="small"></ActivityIndicator>) : (<Text style={{color:'#fff',fontSize:18}}>{localization.Login}</Text>)}
         
      
       </TouchableOpacity>

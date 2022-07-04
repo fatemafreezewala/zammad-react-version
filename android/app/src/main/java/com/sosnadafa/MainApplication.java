@@ -1,4 +1,4 @@
-package com.sosnadafa.controller;
+package com.controller.oujda;
 
 import android.app.Application;
 import android.content.Context;
